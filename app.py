@@ -14,9 +14,9 @@ import pickle
 st.set_page_config(page_title="Dashboard", page_icon="🌍", layout="wide", initial_sidebar_state="expanded")
 def loadCSV():
     # Đọc dữ liệu từ tập tin CSV train
-    df = pd.read_csv("/home/linhtt/Documents/ProjectLDA/processingDataLDA/data_train1.csv")
+    df = pd.read_csv("data_train1.csv")
     # Đọc dữ liệu từ tập tin CSV add thêm để kiểm tra độ chính xác
-    df1 = pd.read_csv('/home/linhtt/Documents/ProjectLDA/processingDataLDA/data_add_streamlit.csv')
+    df1 = pd.read_csv('data_add_streamlit.csv')
     return df, df1
 
 # đọc giá trị cuối cùng / giá trị hiện tại của csv để lấy giá trị hiện tại hiển thị lên đồng hồ
@@ -344,143 +344,6 @@ def task2():
             st.table(df)
 
 
-# task 1
-def calculateAccuracy(y_true, y_pred):
-    accuracyMultioutput = []
-    for i in range(0, len(y_true)):
-        delta = abs(y_pred[i] - y_true[i])
-        accuracyMultioutput.append(100 - (delta * 100) / abs(y_pred[i]))
-    return accuracyMultioutput
-
-def task1():
-        # Load model
-        filename = '/home/linhtt/Documents/ProjectLDA/visualizeData/multioutput_regression_model_LDA'
-        loaded_model = pickle.load(open(filename, 'rb'))
-
-        st.write("Parameter")
-        with st.form("Form2"):
-            # Divide 4 columns
-            col11, col12, col13, col14 = st.columns(4)
-            with col11:
-                um100 = st.text_input("<100um")
-                um10 = st.text_input("<10um")
-                um120 = st.text_input("<120um")
-
-            with col12:
-                um130 = st.text_input("<130um")
-                um150 = st.text_input("<150um")
-                um15 = st.text_input("<15um")
-
-            with col13:
-                um20 = st.text_input("<20um")
-                um45 = st.text_input("<45um")
-                um50 = st.text_input("<50um")
-
-            with col14:
-                um60 = st.text_input("<60um")
-                um70 = st.text_input("<70um")
-                um80 = st.text_input("<80um")
-
-            # Divide 2 columns
-            col21, col22 = st.columns(2)
-            with col21:
-                # st.write("Thông tin khí than")
-                NhietTri_CO = st.text_input("Giá trị nhiệt của khí than CO")
-                NhietDo_CO = st.text_input("Nhiệt độ khí CO")
-                LuuLuong_CO = st.text_input("Lưu lượng khí than CO")
-
-            with col22:
-                # st.write("Hydrat")
-                Do_am = st.text_input("Độ ẩm")
-                KL_AH = st.text_input("Tổng khối lượng AH sử dụng")
-                KT_AO = st.text_input("Tiêu hao khí than trên 1 tấn AO")
-
-            # Divide 4 columns
-            col31, col32, col33, col34 = st.columns(4)
-            with col31:
-                MKN = st.text_input("MKN")
-                Oxi = st.text_input("Oxi")
-                PO1P2 = st.text_input("PO1P2")
-
-            with col32:
-                PO2P2 = st.text_input("PO2P2")
-                PO3P2 = st.text_input("PO3P2")
-                PO4P = st.text_input("PO4P")
-
-            with col33:
-                CO1P2 = st.text_input("CO1P2")
-                CO2P2 = st.text_input("CO2P2")
-                CO3P2 = st.text_input("CO3P2")
-
-            with col34:
-                CO4P2 = st.text_input("CO4P2")
-                PO4T1 = st.text_input("PO4T1")
-                ID_fan = st.text_input("ID tốc độ quạt")
-
-            result = st.form_submit_button("Result")
-
-            dict_items = {
-                ("um100", um100),
-                ("um10", um10),
-                ("um120", um120),
-                ("um130", um130),
-                ("um150", um150),
-                ("um15", um15),
-                ("um20", um20),
-                ("um45", um45),
-                ("um50", um50),
-                ("um60", um60),
-                ("um70", um70),
-                ("um80", um80),
-                ("Giá trị nhiệt của khí than CO", NhietTri_CO),
-                ("Nhiệt độ khí CO", NhietDo_CO),
-                ("Lưu lượng khí than CO", LuuLuong_CO),
-                ("Độ ẩm", Do_am),
-                ("Tổng khối lượng AH sử dụng", KL_AH),
-                ("Tiêu hao khí than trên 1 tấn AO", KT_AO),
-
-                ("MKN", MKN),
-                ("Oxi", Oxi),
-                ("PO1P2", PO1P2),
-                ("PO2P2", PO2P2),
-                ("PO3P2", PO3P2),
-                ("PO4P", PO4P),
-                ("CO1P2", CO1P2),
-                ("CO2P2", CO2P2),
-                ("CO3P2", CO3P2),
-                ("CO4P2", CO4P2),
-                ("PO4T1", PO4T1),
-                ("ID tốc độ quạt", ID_fan)}
-
-        if result:
-            all_values_of_dict_coHat = True
-            for key, value in dict_items:
-                if not value:
-                    st.error(f"Vui lòng nhập số liệu vào ô :orange[{key}]")
-                    all_values_of_dict_coHat = False
-
-            if all_values_of_dict_coHat is True:
-                X_str = [NhietTri_CO, NhietDo_CO, LuuLuong_CO, Do_am, um100, um10, um120, um130, um150,
-                        um15, um20, um45, um50, um60, um70, um80, KL_AH, KT_AO]
-                y_str = [MKN, Oxi, PO1P2, PO2P2, PO3P2, PO4P, CO1P2, CO2P2, CO3P2, CO4P2, PO4T1, ID_fan]
-                X_float = [float(value) for value in X_str]
-                y_float = [float(value) for value in y_str]
-
-                X_arr_1D = np.array(X_float)
-                y_arr_1D = np.array(y_float)
-
-                result = loaded_model.predict([X_arr_1D])
-                result_1D = np.reshape(result, -1)
-
-                accuracyMultioutput = calculateAccuracy(y_arr_1D, result_1D)
-                matrix = np.concatenate((result, [y_arr_1D], [accuracyMultioutput]), axis=0)
-                df = pd.DataFrame(matrix,
-                                columns=['MKN', 'Oxi', 'PO1P2', 'PO2P2', 'PO3P2',
-                                        'PO4P', 'CO1P2', 'CO2P2', 'CO3P2', 'CO4P2', 'PO4T1',
-                                        'ID toc do quat'])
-                st.table(df)
-
-
 if __name__ == "__main__":
     df, df1 = loadCSV()
     current_PO4T1, current_MKN, current_IDtocdoquat = readLastCSV(df)
@@ -490,4 +353,3 @@ if __name__ == "__main__":
     result,predict_values_mkn, predict_values_mkn_yhat,predict_values_PO4T1,predict_values_PO4T1_yhat,predict_values_idtocdoquat,predict_values_idtocdoquat_yhat = getDataPredict()
     showChart(result,predict_values_mkn, predict_values_mkn_yhat,predict_values_PO4T1,predict_values_PO4T1_yhat,predict_values_idtocdoquat,predict_values_idtocdoquat_yhat)
     task2()
-    task1()

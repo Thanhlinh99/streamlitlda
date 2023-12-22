@@ -76,8 +76,8 @@ def main():
         print(accuracy)
         return predict_values, accuracy
 
-    path_to_data_train = '/home/linhtt/Documents/ProjectLDA/processingDataLDA/data_train1.csv'
-    path_to_data_validate = '/home/linhtt/Documents/ProjectLDA/processingDataLDA/data_validate1.csv'
+    path_to_data_train = 'data_train1.csv'
+    path_to_data_validate = 'data_validate1.csv'
     mkn_predictor = TimeSeriesPredictor(path_to_data_train, path_to_data_validate)
     mkn_values, accuracy_mkn = process_predictor(mkn_predictor, 'MKN')
 
